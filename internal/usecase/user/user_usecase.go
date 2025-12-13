@@ -3,6 +3,8 @@ package usecase
 import (
 	"errors"
 	"go-task-manager/internal/domain"
+	"go-task-manager/pkg/utils"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -48,6 +50,11 @@ func (u *userUseCase) Login(email, password string) (string, error) {
 		return "", errors.New("invalid credentials")
 	}
 
-	// 3. Token oluştur (Şimdilik dummy string, sonraki adımda JWT olacak)
-	return "dummy_token_12345", nil
+
+	// 3. Token oluştur
+	token, err := utils.GenerateToken(user.ID)
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }
