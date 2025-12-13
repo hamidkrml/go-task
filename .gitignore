@@ -1,0 +1,22 @@
+# Binaries
+/bin
+/dist
+/build
+
+# Object files
+*.o
+*.so
+
+# Go specific
+go.sum
+
+# Dependency directories (if using vendor)
+/vendor
+
+# IDEs
+.idea
+.vscode
+.DS_Store
+
+# Environment Variables (SENSITIVE)
+.env
