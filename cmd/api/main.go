@@ -1,10 +1,11 @@
+package main
 
 import (
 	"fmt"
 	"go-task-manager/internal/config"
 	userHandler "go-task-manager/internal/delivery/http/user"
 	taskHandler "go-task-manager/internal/delivery/http/task"
-	"go-task-manager/internal/repository/postgres"
+	userRepoPkg "go-task-manager/internal/repository/postgres"
 	taskRepo "go-task-manager/internal/repository/postgres/task"
 	userUseCase "go-task-manager/internal/usecase/user"
 	taskUseCase "go-task-manager/internal/usecase/task"
@@ -31,7 +32,7 @@ func main() {
 
 	// 3. Katmanları Bağla (Dependency Injection)
 	// User
-	userRepo := postgres.NewUserRepository(db)
+	userRepo := userRepoPkg.NewUserRepository(db)
 	userUC := userUseCase.NewUserUseCase(userRepo)
 
 	// Task
