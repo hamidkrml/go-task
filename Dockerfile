@@ -20,9 +20,10 @@ FROM alpine:latest
 
 WORKDIR /app
 
-# Build aşamasından sadece binary'i al
+# Build aşamasından binary ve web dosyalarını al
 COPY --from=builder /app/main .
 COPY --from=builder /app/.env . 
+COPY --from=builder /app/web ./web
 
 EXPOSE 8080
 

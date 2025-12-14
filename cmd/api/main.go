@@ -14,6 +14,37 @@ import (
 	"net/http"
 )
 
+// CORS Middleware
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		
+		next.ServeHTTP(w, r)
+	})
+}
+
+func corsHandler(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		
+		handler(w, r)
+	}
+}
+
 func main() {
 	fmt.Println("Starting Task Manager API...")
 
@@ -41,6 +72,14 @@ func main() {
 
 	// 4. Router ve Handler'ları Ayarla
 	mux := http.NewServeMux()
+	
+	// Static files (Frontend)
+	fs := http.FileServer(http.Dir("./web"))
+	mux.Handle("/", corsMiddleware(fs))
+	mux.Handle("/css/", corsMiddleware(fs))
+	mux.Handle("/js/", corsMiddleware(fs))
+	
+	// API endpoints (with CORS)
 	userHandler.NewUserHandler(mux, userUC)
 	taskHandler.NewTaskHandler(mux, taskUC)
 
