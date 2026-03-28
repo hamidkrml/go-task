@@ -20,3 +20,8 @@ go.sum
 
 # Environment Variables (SENSITIVE)
 .env
+.env.local
+
+# Docker
+docker-compose.override.yml
+.dockerignore

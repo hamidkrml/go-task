@@ -47,14 +47,92 @@ Adım adım ilerleyerek geliştireceğimiz modüller:
 
 ---
 
-## 🚀 Kurulum (İleride Eklenecek)
+## 🚀 Kurulum ve Çalıştırma
 
-Proje tamamlandığında aşağıdaki komutlarla çalıştırılabilecek:
+### Gereksinimler
+- Docker
+- Docker Compose
 
+### Adımlar
+
+1. **Projeyi Klonla:**
 ```bash
-# Projeyi klonla
-git clone https://github.com/kullaniciadi/go-task-manager.git
+git clone https://github.com/hamidkrml/go-task.git
+cd go-task
+```
 
-# Docker ile ayağa kaldır
+2. **Docker ile Başlat:**
+```bash
 docker-compose up --build
 ```
+
+Uygulama `http://localhost:8080` adresinde çalışmaya başlayacak.
+
+---
+
+## 📡 API Kullanımı
+
+### 1. Kullanıcı Kaydı
+```bash
+curl -X POST http://localhost:8080/register \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Hamid", "email": "hamid@example.com", "password": "securepassword"}'
+```
+
+### 2. Giriş Yapma (Token Alma)
+```bash
+curl -X POST http://localhost:8080/login \
+     -H "Content-Type: application/json" \
+     -d '{"email": "hamid@example.com", "password": "securepassword"}'
+```
+
+**Yanıt:**
+```json
+{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}
+```
+
+### 3. Görev Oluşturma (Token Gerekli)
+```bash
+curl -X POST http://localhost:8080/tasks \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer YOUR_TOKEN" \
+     -d '{"title": "İlk Görevim", "description": "Bu bir test görevi"}'
+```
+
+### 4. Görevleri Listeleme
+```bash
+curl -X GET http://localhost:8080/tasks \
+     -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+### 5. Görev Durumu Güncelleme
+```bash
+curl -X PUT "http://localhost:8080/tasks/update?id=1" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer YOUR_TOKEN" \
+     -d '{"status": "done"}'
+```
+
+### 6. Görev Silme
+```bash
+curl -X DELETE "http://localhost:8080/tasks/delete?id=1" \
+     -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+---
+
+## 🎓 Öğrenilen Konular
+
+Bu proje geliştirme sürecinde şunlar öğrenildi:
+- ✅ Go dilinde Clean Architecture uygulama
+- ✅ PostgreSQL veritabanı entegrasyonu
+- ✅ JWT tabanlı kimlik doğrulama
+- ✅ Docker ve Docker Compose kullanımı
+- ✅ Git ve GitHub workflow'ları
+- ✅ REST API tasarımı ve güvenliği
+
+---
+
+## 📝 Lisans
+
+Bu bir eğitim projesidir.
